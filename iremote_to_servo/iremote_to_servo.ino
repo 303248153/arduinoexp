@@ -29,7 +29,7 @@ IRrecv irrecv(4);
 unsigned long last_result = 0;
 unsigned int repeat_count = 0;
 unsigned int servo_max_position = 2400;
-unsigned int servo_min_position = 544;
+unsigned int servo_min_position = 700;
 unsigned int servo_position = servo_min_position + servo_max_position / 2;
 
 void setup() {
@@ -52,11 +52,15 @@ void loop() {
     }
     
     // set servo position by pressed key
-    // + is FF02FD, - is FF9867
+    // + is FF02FD, - is FF9867, >>| is FF906F, <<| is FFE01F
     if (key == 0xFF02FD) {
       servo_position = min(servo_max_position, servo_position + 100);
-    } else if (key = 0xFF9867) {
+    } else if (key == 0xFF9867) {
       servo_position = max(servo_min_position, servo_position - 100);
+    } else if (key == 0xFF906F) {
+      servo_position = servo_max_position;
+    } else if (key == 0xFFE01F) {
+      servo_position = servo_min_position;
     }
     servo.write(servo_position);
     
